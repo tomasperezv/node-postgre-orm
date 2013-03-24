@@ -12,8 +12,9 @@ this.get = function(type) {
 	var connection = null;
 
 	switch(type) {
+		default:
 		case this.POSTGRE:
-			var Config = require("../config.js"),
+			var Config = require("../../node-config/config"),
 				database = require('./' + this.POSTGRE + '.js');
 			connection = new database.PostgreSQLConnection(Config.get('database'));
 			break;

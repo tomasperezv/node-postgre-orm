@@ -24,10 +24,9 @@
  */
 
 // By default selecting the postgre sql connector.
-var DataBaseFactory = require('../database/database-factory'),
-	DataBaseFormat = require('../database/database-format'),
-	cache = require('./cache'),
-	Logger = require('../logger/logger').Logger.get('console');
+var DataBaseFactory = require('../core/database-factory'),
+	DataBaseFormat = require('../core/database-format'),
+	cache = require('./cache');
 
 this.databaseType = DataBaseFactory.POSTGRE;
 
@@ -85,9 +84,7 @@ DataBaseModel.prototype.load = function(filters, onSuccess, maxItems, orderBy, o
 		// The data is not stored in the cache, we need to perform the DB query
 		this.lastQuery = this.getLoadQuery(filters, maxItems, orderBy, offset);
 
-		Logger.logQuery(this.lastQuery);
-
-		var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
+		var dataBaseConnection = DataBaseFactory.get(this.databaseType);
 
 		var model = this;
 
@@ -153,8 +150,6 @@ DataBaseModel.prototype.update = function(data, onSuccess) {
 
 	this.lastQuery = this.getUpdateQuery(data);
 
-	Logger.logQuery(this.lastQuery);
-
 	var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
 	dataBaseConnection.insert(this.lastQuery, function() {
 		onSuccess(data);
@@ -163,7 +158,6 @@ DataBaseModel.prototype.update = function(data, onSuccess) {
 
 DataBaseModel.prototype.remove = function(data, onSuccess) {
 	this.lastQuery = this.getRemoveQuery(data);
-	Logger.logQuery(this.lastQuery);
 
 	var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
 	dataBaseConnection.select(this.lastQuery, function() {
@@ -180,7 +174,6 @@ DataBaseModel.prototype.count = function(filters, onSuccess) {
 	if (cachedData === null) {
 
 		this.lastQuery = this.getCountQuery(filters);
-		Logger.logQuery(this.lastQuery);
 
 		var self = this;
 
