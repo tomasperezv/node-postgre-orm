@@ -2,7 +2,7 @@
  * @author tom@0x101.com
  *
  * Base object for representing tables in the DB and perform operations with
- * them. 
+ * them.
  *
  * Example: (for a given Post object)
  * 
@@ -15,22 +15,26 @@
  * })
  */
 
-/*
- * Different strategies for accessing to the DB, can be used here:
- * SQLiteConnection and PostgreSQLConnection, 
- * 
- * 	var DataBaseConnection = require('../database/sqlite-connection');
- * 							 require('../database/postgresql-connection');
- */
-
-// By default selecting the postgre sql connector.
 var DataBaseFactory = require('../core/database-factory'),
 	DataBaseFormat = require('../core/database-format'),
 	cache = require('./cache');
 
+// By default selecting the postgre sql connector.
 this.databaseType = DataBaseFactory.POSTGRE;
 
-DataBaseModel = function() {
+DataBaseModel = function(params) {
+
+	if (typeof params === 'undefined') {
+		var params = {};
+	}
+
+	/**
+	 * @type {Object} options
+	 */
+
+	this.options = {
+		enableCache: (params.enableCache ? params.enableCache : false)
+	};
 
 	this.table = '';
 	this.lastQuery = '';
@@ -75,9 +79,13 @@ DataBaseModel.prototype.load = function(filters, onSuccess, maxItems, orderBy, o
 		var filters = {};
 	}
 
-	// First try to retrieve the data from the cache layer
+	var cachedData = null;
 	var cacheKey = this.cache.getKey(this.table, filters);
-	var cachedData = this.cache.get(cacheKey);
+
+	if (this.options.enableCache) {
+		// Try to retrieve the data from the cache layer
+		cachedData = this.cache.get(cacheKey);
+	}
 
 	if (cachedData === null) {
 
@@ -142,7 +150,9 @@ DataBaseModel.prototype.create = function(data, onSuccess) {
 
 	var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
 	dataBaseConnection.insert(this.lastQuery, function(result) {
-		onSuccess(result[0].id);
+		if (typeof onSuccess === 'function') {
+			onSuccess(result[0].id);
+		}
 	});
 };
 
