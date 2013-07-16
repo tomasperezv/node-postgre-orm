@@ -4,7 +4,7 @@
  * Basic cache strategy.
  */
 
-Cache = function() {
+var Cache = function() {
 
 	this._keyPrefix = '_';
 
