@@ -22,7 +22,7 @@ var DataBaseFactory = require('../core/database-factory'),
 // By default selecting the postgre sql connector.
 this.databaseType = DataBaseFactory.POSTGRE;
 
-DataBaseModel = function(params) {
+var DataBaseModel = function(params) {
 
 	if (typeof params === 'undefined') {
 		var params = {};
