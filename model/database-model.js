@@ -156,6 +156,11 @@ DataBaseModel.prototype.create = function(data, onSuccess) {
 	});
 };
 
+/**
+ * Performs an update operation.
+ * @param Object data
+ * @param Function onSuccess
+ */
 DataBaseModel.prototype.update = function(data, onSuccess) {
 
 	this.lastQuery = this.getUpdateQuery(data);
@@ -166,15 +171,27 @@ DataBaseModel.prototype.update = function(data, onSuccess) {
 	});
 };
 
+/**
+ * Performs a remove operation.
+ * @param Object data
+ * @param Function onSuccess
+ */
 DataBaseModel.prototype.remove = function(data, onSuccess) {
 	this.lastQuery = this.getRemoveQuery(data);
 
 	var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
 	dataBaseConnection.select(this.lastQuery, function() {
-		onSuccess(data.id);
+		if (typeof onSuccess === 'function') {
+			onSuccess(data.id);
+		}
 	});
 };
 
+/**
+ * Performs a count operation.
+ * @param Object data
+ * @param Function onSuccess
+ */
 DataBaseModel.prototype.count = function(filters, onSuccess) {
 
 	// First try to retrieve the data from the cache layer
@@ -194,8 +211,9 @@ DataBaseModel.prototype.count = function(filters, onSuccess) {
 
 			// Store the result in cache
 			self.cache.set(cacheKey, count);
-
-			onSuccess(count);
+			if (typeof onSuccess === 'function') {
+				onSuccess(count);
+			}
 
 		});
 
@@ -206,9 +224,9 @@ DataBaseModel.prototype.count = function(filters, onSuccess) {
 }
 
 /**
- * Builds an insert query.
+ * Builds and insert query.
  *
- * @param Object data 
+ * @param Object data
  * @return String
  */
 DataBaseModel.prototype.getInsertQuery = function(data) {
@@ -258,10 +276,22 @@ DataBaseModel.prototype.getInsertQuery = function(data) {
 	return query;	
 };
 
+/**
+ * Returns a remove operation.
+ *
+ * @param Object data
+ * @return String
+ */
 DataBaseModel.prototype.getRemoveQuery = function(data) {
 	return query = 'DELETE FROM ' + this.table + ' WHERE id = ' + data.id;
 };
 
+/**
+ * Returns an update query.
+ *
+ * @param Object data
+ * @return String
+ */
 DataBaseModel.prototype.getUpdateQuery = function(data) {
 
 	var numFields = Object.keys(data).length;
@@ -370,6 +400,11 @@ DataBaseModel.prototype.getCountQuery = function(filters) {
 	return query;
 };
 
+
+/**
+ * Generate a random string
+ * @return {String}
+ */
 DataBaseModel.prototype.getRandomString = function() {
 
 	var chars, rand, i, salt, bits;
@@ -390,4 +425,5 @@ DataBaseModel.prototype.getRandomString = function() {
 	return salt;
 };
 
+// Expose the module externally
 exports.DataBaseModel = DataBaseModel;
