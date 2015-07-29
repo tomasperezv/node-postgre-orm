@@ -35,7 +35,8 @@ this.toDate = function(timestamp) {
 this.toDateRFC822 = function(timestamp) {
 
 	if (typeof timestamp === 'undefined') {
-		var timestamp = new Date().getTime();
+		var currentTime = new Date();
+		timestamp = currentTime.getTime();
 	} else {
 		timestamp *=1000;
 	}
@@ -45,7 +46,6 @@ this.toDateRFC822 = function(timestamp) {
 		hours = String(date.getHours()),
 		minutes = String(date.getMinutes()),
 		seconds = String(date.getSeconds()),
-		day = String(date.getDay()),
 		month = String(date.getMonth()),
 		year = String(date.getFullYear());
 
@@ -53,5 +53,5 @@ this.toDateRFC822 = function(timestamp) {
 		months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 	return weekdays[day] + ', ' + (day > 9 ? day : '0' + day) + ' ' + months[month] + ' ' + year + ' ' + (hours > 9 ? hours : '0' + hours) + ':' + (minutes > 9 ? minutes : '0' + minutes) + ':' + (seconds > 9 ? seconds : '0' + seconds) + ' +0000';
-	
+
 };

@@ -5,13 +5,13 @@
  * them.
  *
  * Example: (for a given Post object)
- * 
+ *
  * posts.load({id: 1},function(data) {
- * 	console.log(data);
+ *  console.log(data);
  * });
- * 
+ *
  * posts.create({text: 'test'}, function(id) {
- * 	console.log('created blog post: ' + id);
+ *  console.log('created blog post: ' + id);
  * })
  */
 
@@ -25,12 +25,8 @@ this.databaseType = DataBaseFactory.POSTGRE;
 var DataBaseModel = function(params) {
 
 	if (typeof params === 'undefined') {
-		var params = {};
+		params = {};
 	}
-
-	/**
-	 * @type {Object} options
-	 */
 
 	this.options = {
 		enableCache: (params.enableCache ? params.enableCache : false)
@@ -48,7 +44,7 @@ var DataBaseModel = function(params) {
 /**
  * Return the contents of the last query executed in the DB as an array of
  * objects. (Each element of the array is a row)
- * @return Array
+ * @return {Array}
  */
 DataBaseModel.prototype.getData = function() {
 	var data = [];
@@ -62,21 +58,21 @@ DataBaseModel.prototype.getData = function() {
 
 /**
  * Performs a load from the DB depending on the filters that we specify.
- * 
+ *
  * Example:
  *
  * posts.load({id: 2},function(data) {
  * 	console.log(data);
  * });
  *
- * @param Array filters 
- * @param Function onSuccess
- * @param Integer maxItems 
+ * @param {Array} filters
+ * @param {Function} onSuccess
+ * @param {Integer} maxItems
  */
 DataBaseModel.prototype.load = function(filters, onSuccess, maxItems, orderBy, offset) {
 
 	if (typeof filters === 'undefined') {
-		var filters = {};
+		filters = {};
 	}
 
 	var cachedData = null;
@@ -115,6 +111,9 @@ DataBaseModel.prototype.load = function(filters, onSuccess, maxItems, orderBy, o
 
 /**
  * @author tom@0x101.com
+ * @param {Object} data
+ * @param {Function} onSuccess
+ * @public
  */
 DataBaseModel.prototype.createAndLoad = function(data, onSuccess) {
 
@@ -123,7 +122,7 @@ DataBaseModel.prototype.createAndLoad = function(data, onSuccess) {
 
 		self.lastQuery = self.getLoadQuery({id: id}, 1);
 	
-		var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
+		var dataBaseConnection = DataBaseFactory.get(this.databaseType);
 	
 		dataBaseConnection.select(self.lastQuery, function(rows) {
 			onSuccess(rows.length > 0 ? rows[0] : {});
@@ -141,14 +140,14 @@ DataBaseModel.prototype.createAndLoad = function(data, onSuccess) {
  *
  * It passes the id of the row created to the callback.
  *
- * @param Object data
- * @param Function onSuccess
+ * @param {Object} data
+ * @param {Function} onSuccess
  */
 DataBaseModel.prototype.create = function(data, onSuccess) {
 
 	this.lastQuery = this.getInsertQuery(data);
 
-	var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
+	var dataBaseConnection = DataBaseFactory.get(this.databaseType);
 	dataBaseConnection.insert(this.lastQuery, function(result) {
 		if (typeof onSuccess === 'function') {
 			onSuccess(result[0].id);
@@ -158,14 +157,14 @@ DataBaseModel.prototype.create = function(data, onSuccess) {
 
 /**
  * Performs an update operation.
- * @param Object data
- * @param Function onSuccess
+ * @param {Object} data
+ * @param {Function} onSuccess
  */
 DataBaseModel.prototype.update = function(data, onSuccess) {
 
 	this.lastQuery = this.getUpdateQuery(data);
 
-	var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
+	var dataBaseConnection = DataBaseFactory.get(this.databaseType);
 	dataBaseConnection.insert(this.lastQuery, function() {
 		onSuccess(data);
 	});
@@ -173,13 +172,13 @@ DataBaseModel.prototype.update = function(data, onSuccess) {
 
 /**
  * Performs a remove operation.
- * @param Object data
- * @param Function onSuccess
+ * @param {Object} data
+ * @param {Function} onSuccess
  */
 DataBaseModel.prototype.remove = function(data, onSuccess) {
 	this.lastQuery = this.getRemoveQuery(data);
 
-	var dataBaseConnection = DataBaseFactory.get(this.databaseType);  
+	var dataBaseConnection = DataBaseFactory.get(this.databaseType);
 	dataBaseConnection.select(this.lastQuery, function() {
 		if (typeof onSuccess === 'function') {
 			onSuccess(data.id);
@@ -189,8 +188,8 @@ DataBaseModel.prototype.remove = function(data, onSuccess) {
 
 /**
  * Performs a count operation.
- * @param Object data
- * @param Function onSuccess
+ * @param {Object} data
+ * @param {Function} onSuccess
  */
 DataBaseModel.prototype.count = function(filters, onSuccess) {
 
@@ -221,13 +220,13 @@ DataBaseModel.prototype.count = function(filters, onSuccess) {
 		onSuccess(cachedData);
 	}
 
-}
+};
 
 /**
  * Builds and insert query.
  *
- * @param Object data
- * @return String
+ * @param {Object} data
+ * @return {String}
  */
 DataBaseModel.prototype.getInsertQuery = function(data) {
 
@@ -237,7 +236,7 @@ DataBaseModel.prototype.getInsertQuery = function(data) {
 
 	query += '(id, ';
 	var currentPosition = 0;
-	for (fieldName in data) {
+	for (var fieldName in data) {
 		query += fieldName;
 
 		currentPosition++;
@@ -279,18 +278,18 @@ DataBaseModel.prototype.getInsertQuery = function(data) {
 /**
  * Returns a remove operation.
  *
- * @param Object data
- * @return String
+ * @param {Object} data
+ * @return {String}
  */
 DataBaseModel.prototype.getRemoveQuery = function(data) {
-	return query = 'DELETE FROM ' + this.table + ' WHERE id = ' + data.id;
+	return 'DELETE FROM ' + this.table + ' WHERE id = ' + data.id;
 };
 
 /**
  * Returns an update query.
  *
- * @param Object data
- * @return String
+ * @param {Object} data
+ * @return {String}
  */
 DataBaseModel.prototype.getUpdateQuery = function(data) {
 
@@ -300,7 +299,7 @@ DataBaseModel.prototype.getUpdateQuery = function(data) {
 
 	query += ' SET ';
 	var currentPosition = 0;
-	for (fieldName in data) {
+	for (var fieldName in data) {
 
 		var value = data[fieldName];
 
@@ -329,13 +328,16 @@ DataBaseModel.prototype.getUpdateQuery = function(data) {
 /**
  * Builds a simple SELECT query.
  *
- * @param Object filters 
- * @param Integer maxItems 
+ * @param {Object} filters
+ * @param {Integer} maxItems
+ * @param {Object} orderBy
+ * @param {Number} offset
+ * @return {String}
  */
 DataBaseModel.prototype.getLoadQuery = function(filters, maxItems, orderBy, offset) {
 
-	var query = 'SELECT * FROM ' + this.table + ' WHERE ',
-		query = this._applyFilters(query, filters);
+	var query = 'SELECT * FROM ' + this.table + ' WHERE ';
+	query = this._applyFilters(query, filters);
 
 	if (typeof orderBy !== 'undefined') {
 		query += ' ORDER BY ' + orderBy.column + " " + orderBy.type;
@@ -365,9 +367,9 @@ DataBaseModel.prototype._applyFilters = function(query, filters) {
 
 		var first = true;
 		
-		for (fieldName in filters) {
+		for (var fieldName in filters) {
 			
-			if (filters[fieldName] != undefined) {
+			if (typeof filters[fieldName] !== undefined) {
 				if (!first) {
 					query += ' AND ';
 				}
@@ -393,8 +395,8 @@ DataBaseModel.prototype._applyFilters = function(query, filters) {
  * Count the number of rows in a table
  */
 DataBaseModel.prototype.getCountQuery = function(filters) {
-	var query = 'SELECT COUNT(*) FROM ' + this.table + ' WHERE ',
-		query = this._applyFilters(query, filters);
+	var query = 'SELECT COUNT(*) FROM ' + this.table + ' WHERE ';
+	query = this._applyFilters(query, filters);
 
 	query += ';';
 	return query;
@@ -403,19 +405,20 @@ DataBaseModel.prototype.getCountQuery = function(filters) {
 
 /**
  * Generate a random string
+ * @method getRandomString
  * @return {String}
  */
 DataBaseModel.prototype.getRandomString = function() {
 
 	var chars, rand, i, salt, bits;
-  
-	chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'; 
+
+	chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
 	salt = '';
 	bits = 512;
 	
 	// In v8, Math.random() yields 32 pseudo-random bits (in spidermonkey it gives 53)
 	while (bits > 0) {
-		rand = Math.floor(Math.random() * 0x100000000); 
+		rand = Math.floor(Math.random() * 0x100000000);
 
 		for (i = 26; i > 0 && bits > 0; i -= 6, bits -= 6) {
 			salt += chars[0x3F & rand >>> i];

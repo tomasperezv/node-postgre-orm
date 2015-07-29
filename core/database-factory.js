@@ -5,9 +5,17 @@
  * @author tom@0x101.com
  */
 
-this.POSTGRE = 'postgresql-connection';
+var DataBaseFactory = {};
 
-this.get = function(type) {
+DataBaseFactory.POSTGRE = 'postgresql-connection';
+
+/**
+ * @method get
+ * @param {String} type Identifier of the type of DB.
+ * @return {DataBaseConnection}
+ * @public
+ */
+DataBaseFactory.prototype.get = function(type) {
 
 	var connection = null;
 
@@ -15,7 +23,7 @@ this.get = function(type) {
 		default:
 		case this.POSTGRE:
 			var Config = require("../../node-config/config"),
-				database = require('./' + this.POSTGRE + '.js');
+				database = require('./' + this.POSTGRE);
 			connection = new database.PostgreSQLConnection(Config.get('database'));
 			break;
 	}
@@ -23,3 +31,5 @@ this.get = function(type) {
 	return connection;
 
 };
+
+module.exports = DataBaseFactory;

@@ -4,14 +4,12 @@
  * @author tom@0x101.com
  */
 
-DataBaseConnection = function(config) {
+var DataBaseConnection = function(config) {
 
-	/**
-	 * @var {Object} config
-	 *
-	 * This properties are initialized in the child classes.
-	 */
-
+  /**
+   * @var {Object} config
+   * These properties are initialized in the child classes.
+   */
 	this.configuration = {
 		hostname: '',
 		user: '',
@@ -23,13 +21,13 @@ DataBaseConnection = function(config) {
 
 	// Override custom properties
 	if (typeof config !== 'undefined') {
-		for (customProperty in config) {
+		for (var customProperty in config) {
 			if (this.configuration.hasOwnProperty(customProperty)) {
 				this.configuration[customProperty] = config[customProperty];
 			}
 		}
 	}
-}
+};
 
 /**
  * Generic Query operation

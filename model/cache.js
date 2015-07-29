@@ -5,19 +5,16 @@
  */
 
 var Cache = function() {
-
 	this._keyPrefix = '_';
-
 	this._cache = {};
-
 };
 
 /**
  * Return the contents of the last query executed in the DB as an array of
  * objects. (Each element of the array is a row)
- * @return Array
+ * @param {String} key
+ * @return {Array}
  */
-
 Cache.prototype.get = function(key) {
 
 	var data = null;
@@ -34,6 +31,8 @@ Cache.prototype.get = function(key) {
  * Given the information provided by the database-model, it returns
  * the cache key that corresponds.
  *
+ * @param {String} table
+ * @param {Object} filters
  * @return {String}
  */
 

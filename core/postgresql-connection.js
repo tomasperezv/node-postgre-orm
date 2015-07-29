@@ -9,16 +9,28 @@
 var pg = require("pg"),
 	DataBaseConnection = require('./database-connection');
 
-PostgreSQLConnection = function(config) {
+/**
+* @method PostgreSQLConnection
+* @param {Object} config
+* @return return
+* @public
+*/
+var PostgreSQLConnection = function(config) {
 
 	DataBaseConnection.DataBaseConnection.call(this);
 
 	// Generate the dsn
 	this.dsn = 'tcp://' + config.username + ':' + config.password + '@localhost/' + config.database;
-}
+};
 
-PostgreSQLConnection.prototype = new DataBaseConnection.DataBaseConnection(); 
+PostgreSQLConnection.prototype = new DataBaseConnection.DataBaseConnection();
 
+/**
+ * @method query
+ * @param {String} queryString
+ * @param {Function} onSuccess
+ * @public
+ */
 PostgreSQLConnection.prototype.query = function(queryString, onSuccess) {
 	pg.connect(this.dsn, function(err, client) {
 		if (!err) {
@@ -34,6 +46,6 @@ PostgreSQLConnection.prototype.query = function(queryString, onSuccess) {
 			throw err;
 		}
 	});
-}
+};
 
 exports.PostgreSQLConnection = PostgreSQLConnection;
