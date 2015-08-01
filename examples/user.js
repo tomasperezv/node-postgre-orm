@@ -2,13 +2,16 @@
  * Example of an object model for a table of users.
  *
  * create table users(
- *  id int not null,
- *  login string,
- *  password string,
- *  permissions int
+ *  id SERIAL PRIMARY KEY,
+ *  login text,
+ *  password text,
+ *  permissions int NULL
  * );
+ *
+ * GRANT ALL PRIVILEGES ON TABLE users to $user;
+ * GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public to $user;
  */
-var DataBaseModel = require('./database-model');
+var DataBaseModel = require('../model/database-model');
 
 var User = function() {
 
@@ -52,4 +55,4 @@ User.prototype.getByLogin = function(login, callback) {
   });
 };
 
-exports.User = User;
+module.exports = User;
