@@ -7,7 +7,7 @@
  */
 
 var pg = require("pg"),
-DataBaseConnection = require('./database-connection');
+  DataBaseConnection = require('./database-connection');
 
 /**
  * @method PostgreSQLConnection

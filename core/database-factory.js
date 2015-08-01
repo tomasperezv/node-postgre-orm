@@ -5,9 +5,9 @@
  * @author tom@0x101.com
  */
 
-var DataBaseFactory = {};
-
-DataBaseFactory.POSTGRE = 'postgresql-connection';
+var DataBaseFactory = function() {
+  this.POSTGRE = 'postgresql-connection';
+};
 
 /**
  * @method get
@@ -22,9 +22,9 @@ DataBaseFactory.prototype.get = function(type) {
   switch(type) {
     default:
       case this.POSTGRE:
-      var Config = require("../../node-config/config"),
-    database = require('./' + this.POSTGRE);
-    connection = new database.PostgreSQLConnection(Config.get('database'));
+        var config = require("../config/database.json"),
+            database = require('./' + this.POSTGRE);
+            connection = new database.PostgreSQLConnection(config);
     break;
   }
 
@@ -32,4 +32,4 @@ DataBaseFactory.prototype.get = function(type) {
 
 };
 
-module.exports = DataBaseFactory;
+module.exports = new DataBaseFactory();

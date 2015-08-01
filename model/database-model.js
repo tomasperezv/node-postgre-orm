@@ -16,8 +16,8 @@
  */
 
 var DataBaseFactory = require('../core/database-factory'),
-DataBaseFormat = require('../core/database-format'),
-cache = require('./cache');
+    DataBaseFormat = require('../core/database-format'),
+    cache = require('./cache');
 
 // By default selecting the postgre sql connector.
 this.databaseType = DataBaseFactory.POSTGRE;
