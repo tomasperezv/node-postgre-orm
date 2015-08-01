@@ -5,8 +5,8 @@
  */
 
 var Cache = function() {
-	this._keyPrefix = '_';
-	this._cache = {};
+  this._keyPrefix = '_';
+  this._cache = {};
 };
 
 /**
@@ -17,13 +17,13 @@ var Cache = function() {
  */
 Cache.prototype.get = function(key) {
 
-	var data = null;
+  var data = null;
 
-	if (typeof this._cache[key] !== 'undefined') {
-		data = this._cache[key];
-	}
+  if (typeof this._cache[key] !== 'undefined') {
+    data = this._cache[key];
+  }
 
-	return data;
+  return data;
 
 };
 
@@ -38,17 +38,17 @@ Cache.prototype.get = function(key) {
 
 Cache.prototype.getKey = function(table, filters) {
 
-	var key = table;
+  var key = table;
 
-	if (typeof filters !== 'undefined') {
-		for (var filterKey in filters) {
-			if (filters.hasOwnProperty(filterKey) && typeof filters[filterKey] !== 'undefined') {
-				key += this._keyPrefix + filters[filterKey];
-			}
-		}
-	}
+  if (typeof filters !== 'undefined') {
+    for (var filterKey in filters) {
+      if (filters.hasOwnProperty(filterKey) && typeof filters[filterKey] !== 'undefined') {
+        key += this._keyPrefix + filters[filterKey];
+      }
+    }
+  }
 
-	return key;
+  return key;
 
 };
 
@@ -59,7 +59,7 @@ Cache.prototype.getKey = function(table, filters) {
  */
 
 Cache.prototype.set = function(key, value) {
-	this._cache[key] = value;
+  this._cache[key] = value;
 };
 
 // Only store one instance of the cache storage

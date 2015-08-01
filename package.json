@@ -1,12 +1,12 @@
 {
-	"name": "node-postgre-orm",
-	"version": "1.0",
-	"author": "Tomas Perez <tom@0x101.com>",
-	"description": "ORM for Postgresql",
-	"dependencies": {
-		"pg": "*",
-	},
-	"engine": {
-		"node": ">=0.6"
-	}
+  "name": "node-postgre-orm",
+  "version": "1.0",
+  "author": "Tomas Perez <tom@0x101.com>",
+  "description": "ORM for Postgresql",
+  "dependencies": {
+    "pg": "*",
+  },
+  "engine": {
+    "node": ">=0.6"
+  }
 }

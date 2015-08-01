@@ -17,18 +17,18 @@ DataBaseFactory.POSTGRE = 'postgresql-connection';
  */
 DataBaseFactory.prototype.get = function(type) {
 
-	var connection = null;
+  var connection = null;
 
-	switch(type) {
-		default:
-		case this.POSTGRE:
-			var Config = require("../../node-config/config"),
-				database = require('./' + this.POSTGRE);
-			connection = new database.PostgreSQLConnection(Config.get('database'));
-			break;
-	}
+  switch(type) {
+    default:
+      case this.POSTGRE:
+      var Config = require("../../node-config/config"),
+    database = require('./' + this.POSTGRE);
+    connection = new database.PostgreSQLConnection(Config.get('database'));
+    break;
+  }
 
-	return connection;
+  return connection;
 
 };
 

@@ -10,23 +10,23 @@ var DataBaseConnection = function(config) {
    * @var {Object} config
    * These properties are initialized in the child classes.
    */
-	this.configuration = {
-		hostname: '',
-		user: '',
-		password: '',
-		database:''
-	};
+  this.configuration = {
+    hostname: '',
+    user: '',
+    password: '',
+    database:''
+  };
 
-	this.dsn = null;
+  this.dsn = null;
 
-	// Override custom properties
-	if (typeof config !== 'undefined') {
-		for (var customProperty in config) {
-			if (this.configuration.hasOwnProperty(customProperty)) {
-				this.configuration[customProperty] = config[customProperty];
-			}
-		}
-	}
+  // Override custom properties
+  if (typeof config !== 'undefined') {
+    for (var customProperty in config) {
+      if (this.configuration.hasOwnProperty(customProperty)) {
+        this.configuration[customProperty] = config[customProperty];
+      }
+    }
+  }
 };
 
 /**
@@ -47,7 +47,7 @@ DataBaseConnection.prototype.query = function(queryString, onSuccess) {
  */
 
 DataBaseConnection.prototype.select = function(queryString, onSuccess) {
-	this.query(queryString, onSuccess);
+  this.query(queryString, onSuccess);
 };
 
 /**
@@ -58,7 +58,7 @@ DataBaseConnection.prototype.select = function(queryString, onSuccess) {
  */
 
 DataBaseConnection.prototype.insert = function(queryString, onSuccess) {
-	this.query(queryString, onSuccess);
+  this.query(queryString, onSuccess);
 };
 
 exports.DataBaseConnection = DataBaseConnection;
